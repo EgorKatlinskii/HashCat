@@ -22,7 +22,9 @@ public class Application {
     private ObjectId id;
 
     @NotNull(message = "Email is missing")
-    @Pattern(regexp = "([a-z])+@([a-z])+\\.ru", message = "Email should match the pattern a-z @ a-z .ru")
+
+
+    @Pattern(regexp = "([a-z])+@([a-z])+\\.com", message = "Email should match the pattern a-z @ a-z .com")
     private String email;
 
     @NotNull(message = "Hershey is missing")

@@ -4,22 +4,24 @@ package com.example.hashcat.Controller;
 import com.example.hashcat.Model.Application;
 import com.example.hashcat.Repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Flux;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 import javax.validation.Valid;
 
 
 @RestController
-public class ApplController {
+public class ApplicationController {
 
     @Autowired
-    ApplicationRepository applicationRepos;
+    ApplicationRepository applicationRepository;
 
 
-    @GetMapping
+/*    @GetMapping
     public Flux<Application> getAllApplication(){
         return applicationRepos.findAll();
     }
@@ -29,6 +31,12 @@ public class ApplController {
     public Mono<Application> saveProduct(@Valid @RequestBody  Application appl){
         System.out.println("controller method called ...");
         return applicationRepos.save(appl);
+    }*/
+    @PostMapping
+    public Mono<ResponseEntity<Void>> acceptanceofApplication(@Valid @RequestBody Application application){
+
+        return Mono.just(new ResponseEntity<Void>(HttpStatus.OK));
     }
+
 
 }
