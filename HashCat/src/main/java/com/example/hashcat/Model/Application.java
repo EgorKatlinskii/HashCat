@@ -7,10 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 
 @Data
@@ -23,8 +20,7 @@ public class Application {
 
     @NotNull(message = "Email is missing")
 
-
-    @Pattern(regexp = "([a-z])+@([a-z])+\\.com", message = "Email should match the pattern a-z @ a-z .com")
+    @Email
     private String email;
 
     @NotNull(message = "Hershey is missing")

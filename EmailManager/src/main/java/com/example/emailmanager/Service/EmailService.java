@@ -6,12 +6,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.io.FileNotFoundException;
 
 @Slf4j
 @Service
@@ -23,6 +19,7 @@ public class EmailService {
 
     ///!!!!!!!!!!
     public Mono<Boolean> sendEmail(String toAddress, String subject)  {
+
         return Mono.fromCallable(() -> {
             try {
                 MimeMessage mimeMessage = emailSender.createMimeMessage();

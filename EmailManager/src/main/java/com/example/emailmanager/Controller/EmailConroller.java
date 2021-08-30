@@ -14,5 +14,6 @@ public class EmailConroller {
     @GetMapping(value = "/{email}")
     public Mono<Boolean> sendMessage(@PathVariable("email") String email){
         return emailService.sendEmail(email,"Mailbox confirmation");
+
     }
 }
