@@ -1,8 +1,7 @@
 package com.example.hashcat.Controller;
 
 
-import com.example.hashcat.Model.Application;
-import com.example.hashcat.Repository.ApplicationRepository;
+import com.example.hashcat.Model.ReguestDTO;
 import com.example.hashcat.Service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,15 +17,13 @@ import javax.validation.Valid;
 @RestController
 public class ApplicationController {
 
-    @Autowired
-    ApplicationRepository applicationRepository;
 
     @Autowired
     ApplicationService applicationService;
 
     @PostMapping
-    public Mono<ResponseEntity<Void>> acceptanceOfApplication(@Valid @RequestBody Application application) {
-        return applicationService.acceptanceOfApplication(application.getEmail())
+    public Mono<ResponseEntity<Void>> acceptanceOfApplication(@Valid @RequestBody ReguestDTO reguestDTO) {
+        return applicationService.acceptanceOfApplication(reguestDTO.getEmail())
                 .map(responseStatus -> responseStatus
                         ? new ResponseEntity<Void>(HttpStatus.OK)
                         : new ResponseEntity<Void>(HttpStatus.INTERNAL_SERVER_ERROR));

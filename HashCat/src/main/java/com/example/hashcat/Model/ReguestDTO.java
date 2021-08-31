@@ -1,25 +1,19 @@
 package com.example.hashcat.Model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 
-@Data
-@AllArgsConstructor
-@Document(collection = "Application")
-public class Application {
 
-    @Id
-    private ObjectId id;
+@Data
+public class ReguestDTO {
 
     @NotNull(message = "Email is missing")
-
     @Email
     private String email;
 
