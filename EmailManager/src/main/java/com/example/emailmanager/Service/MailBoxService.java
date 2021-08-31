@@ -28,6 +28,8 @@ public class MailBoxService {
         return mailBoxRepository.existsByLogin(login);
     }
 
+
+    //Вызывается после перехода по ссылке на почтовом ящике
     public Mono<Boolean> saveLogin(MailBox mailBox) {
         return mailBoxRepository.save(mailBox)
                 .map(entity -> true)
