@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 import javax.mail.internet.MimeMessage;
@@ -24,6 +25,9 @@ public class MailBoxService {
     MailBoxRepository mailBoxRepository;
 
 
+    @Autowired
+    private WebClient.Builder webClientBuilder;
+
     public Mono<Boolean> getStatus(String login) {
         return mailBoxRepository.existsByLogin(login);
     }
@@ -38,42 +42,28 @@ public class MailBoxService {
 
 
     public Mono<Boolean> sendEmail(String toAddress, String subject) {
-
         return getStatus(toAddress).flatMap(status ->
                 status
-                        ? Mono.just(true) //!!!!! запуск микросервиса по отправке хешей для расшифровки
+                        ? webClientBuilder.build().post()
+                        .uri("http://localhost:8083/", toAddress)
+                        .retrieve().bodyToMono(Boolean.class).onErrorReturn(false)//!!!!! запуск микросервиса по отправке хешей для расшифровки
+
                         : Mono.fromCallable(() -> {
-                    try {
+
                         MimeMessage mimeMessage = emailSender.createMimeMessage();
                         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
                         messageHelper.setTo(toAddress);
                         messageHelper.setSubject(subject);
-                        messageHelper.setText("Сlick on the link to confirm your identity: " + "ссылка");
-
+                        messageHelper.setText("Сlick on the link to confirm your identity: " + "hhtp");
                         emailSender.send(mimeMessage);
                         return true;
-                    } catch (Exception e) {
-                        log.warn("Failed to send email with subject {}, due to {}", subject, e.getMessage(), e);
-                        return false;
-                    }
                 }).onErrorReturn(false));
 
+    }
 
-        /*return Mono.fromCallable(() -> {
-            try {
-                MimeMessage mimeMessage = emailSender.createMimeMessage();
-                MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
-                messageHelper.setTo(toAddress);
-                messageHelper.setSubject(subject);
-                messageHelper.setText("Сlick on the link to confirm your identity: " + "ссылка");
 
-                emailSender.send(mimeMessage);
-                return true;
-            } catch (Exception e) {
-                log.warn("Failed to send email with subject {}, due to {}", subject, e.getMessage(), e);
-                return false;
-            }
-        }).onErrorReturn(false);*/
+
+    public Mono<Boolean> sendHashesEmail(String hashes){
 
     }
 }

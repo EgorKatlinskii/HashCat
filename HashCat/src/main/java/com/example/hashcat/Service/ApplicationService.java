@@ -17,17 +17,19 @@ public class ApplicationService {
     @Autowired
     private ApplicationRepository applicationRepository;
 
-    public Mono<Boolean> acceptanceOfApplication(String email){
-       return webClientBuilder.build().get()
-               .uri("http://localhost:8081/{email}", email)
-               .retrieve().bodyToMono(Boolean.class).onErrorReturn(false);
+    public Mono<Boolean> acceptanceOfApplication(String email) {
+        return webClientBuilder.build().get()
+                .uri("http://localhost:8081/{email}", email)
+                .retrieve().bodyToMono(Boolean.class).onErrorReturn(false);
     }
 
-    public Mono<ReguestDTO> getCurrentApplication(String email){
+    public Mono<ReguestDTO> getCurrentApplication(String email) {
         return applicationRepository.findTopByEmail(email);
     }
 
-   public Mono<?> save(ReguestDTO application){
+    public Mono<?> save(ReguestDTO application) {
         return applicationRepository.save(application);
-   }
+    }
+
+
 }

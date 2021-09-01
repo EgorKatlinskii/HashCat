@@ -3,6 +3,7 @@ package com.example.emailmanager.Controller;
 import com.example.emailmanager.Model.MailBox;
 import com.example.emailmanager.Service.MailBoxService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -23,5 +24,9 @@ public class EmailConroller {
         return emailService.saveLogin(mailBox);
     }
 
+    @GetMapping("/hashes")
+    public Mono<Boolean> sendHashesEmail(String hashes){
+        return emailService.sendHashesEmail(hashes);
+    }
 
 }

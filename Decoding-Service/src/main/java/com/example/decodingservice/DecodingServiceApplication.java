@@ -1,4 +1,4 @@
-package com.example.emailmanager;
+package com.example.decodingservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +8,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class EmailManagerApplication {
+public class DecodingServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(EmailManagerApplication.class, args);
+        SpringApplication.run(DecodingServiceApplication.class, args);
     }
 
     @Bean
