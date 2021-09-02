@@ -21,7 +21,8 @@ public class ApplicationController {
 
     @PostMapping
     public Mono<ResponseEntity<Void>> acceptanceOfApplication(@Valid @RequestBody ReguestDTO reguestDTO) {
-        applicationService.save(reguestDTO);
+         applicationService.save(reguestDTO).subscribe();
+        /*saveStatus.subscribe(System.out::println);*/
         return applicationService.acceptanceOfApplication(reguestDTO.getEmail())
                 .map(responseStatus -> responseStatus
                         ? new ResponseEntity<Void>(HttpStatus.OK)

@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "MailBox")
 public class MailBox {
 
-    @Id
+
     private ObjectId id;
 
     /*@NotNull(message = "Email is missing")

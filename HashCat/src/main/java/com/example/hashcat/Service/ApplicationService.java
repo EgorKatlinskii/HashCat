@@ -20,15 +20,16 @@ public class ApplicationService {
     public Mono<Boolean> acceptanceOfApplication(String email) {
         return webClientBuilder.build().get()
                 .uri("http://localhost:8081/{email}", email)
-                .retrieve().bodyToMono(Boolean.class).onErrorReturn(false);
+                .retrieve().bodyToMono(Boolean.class);
     }
 
     public Mono<ReguestDTO> getCurrentApplication(String email) {
         return applicationRepository.findTopByEmail(email);
     }
 
-    public Mono<?> save(ReguestDTO application) {
-        return applicationRepository.save(application);
+    public Mono<Boolean> save(ReguestDTO application) {
+        return applicationRepository.save(application).map(responseEntity -> true)
+                .onErrorReturn(false);
     }
 
 

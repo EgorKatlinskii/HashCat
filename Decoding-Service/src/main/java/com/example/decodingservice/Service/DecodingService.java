@@ -1,6 +1,8 @@
 package com.example.decodingservice.Service;
 
 import com.example.decodingservice.Model.CurrentApplication;
+import com.example.decodingservice.Model.RequestDTOMailBox;
+import org.bson.types.ObjectId;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,12 +21,17 @@ public class DecodingService {
 
 
     public Mono<ResponseEntity<?>> decodingHashes(String email) {
+        RequestDTOMailBox requestDTOMailBox =new RequestDTOMailBox(new ObjectId(),email);
+        Mono<Boolean> saveStatus = webClientBuilder.build().post()
+                .uri("http://localhost:8081/").bodyValue(requestDTOMailBox)
+                .retrieve().bodyToMono(Boolean.class);
+        saveStatus.subscribe(System.out::println);
         return getCurrentApplication(email)
                 .flatMapIterable(CurrentApplication::getHashList)
                 .flatMap(this::sendHashDecodingApi)
                 .collectList()
                 .map(arrayList -> String.join("\n", arrayList))
-                .flatMap(string -> webClientBuilder.build().get().uri("http://localhost:8081/{hashes}", string)
+                .flatMap(string -> webClientBuilder.build().get().uri("http://localhost:8081/{hashes}/{email}", string,email)
                         .retrieve()
                         .toEntity(Boolean.class))
                 .map(responseStatus -> responseStatus.getStatusCodeValue() == HTTP_STATUS_OK
