@@ -5,8 +5,6 @@ import com.example.decodingservice.Model.RequestDTOMailBox;
 import org.bson.types.ObjectId;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -20,7 +18,8 @@ public class DecodingService {
     private WebClient.Builder webClientBuilder;
 
 
-    public Mono<ResponseEntity<?>> decodingHashes(String email) {
+/*
+    public Mono<Void> decodingHashes(String email) {
         RequestDTOMailBox requestDTOMailBox =new RequestDTOMailBox(new ObjectId(),email);
         Mono<Boolean> saveStatus = webClientBuilder.build().post()
                 .uri("http://localhost:8081/").bodyValue(requestDTOMailBox)
@@ -34,10 +33,14 @@ public class DecodingService {
                 .flatMap(string -> webClientBuilder.build().get().uri("http://localhost:8081/{hashes}/{email}", string,email)
                         .retrieve()
                         .toEntity(Boolean.class))
-                .map(responseStatus -> responseStatus.getStatusCodeValue() == HTTP_STATUS_OK
-                        ? new ResponseEntity<>(HttpStatus.OK)
-                        : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+                .flatMap(responseStatus -> responseStatus.getStatusCodeValue() == HTTP_STATUS_OK
+                        ?  webClientBuilder.build().get().uri("http://localhost:8082//{email}", email)
+                        .retrieve().bodyToMono(Void.class).subscribe()
+                        : Mono.when());
     }
+*/
+
+
 
 
     private Mono<String> sendHashDecodingApi(String hash) {

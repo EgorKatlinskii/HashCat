@@ -19,8 +19,8 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class MailBoxService {
 
-
     final String ACTIVE_STATUS = "ACTIVE";
+
     @Autowired
     public JavaMailSender emailSender;
 
@@ -57,7 +57,6 @@ public class MailBoxService {
 
     private Mono<Boolean> sendLetterEmail(String toAddress,String message,String other){
         return Mono.fromCallable(() -> {
-
             MimeMessage mimeMessage = emailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
             messageHelper.setTo(toAddress);

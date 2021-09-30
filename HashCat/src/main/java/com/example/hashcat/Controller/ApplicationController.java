@@ -17,7 +17,8 @@ public class ApplicationController {
 
 
     @Autowired
-    ApplicationService applicationService;
+    private ApplicationService applicationService;
+
 
     @PostMapping
     public Mono<ResponseEntity<Void>> acceptanceOfApplication(@Valid @RequestBody ReguestDTO reguestDTO) {
@@ -42,6 +43,11 @@ public class ApplicationController {
         System.out.println("controller method called ...");
         return (Mono<ReguestDTO>) applicationService.save(appl);
     }*/
+
+    @GetMapping("//{email}")
+    public Mono<Void> deleteApplication(@PathVariable("email") String email){
+        return applicationService.customDeleteApplication(email);
+    }
 
 
 

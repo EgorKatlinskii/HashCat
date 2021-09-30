@@ -32,5 +32,9 @@ public class ApplicationService {
                 .onErrorReturn(false);
     }
 
+    public Mono<Void> customDeleteApplication(String email){
+        Mono<ReguestDTO> reguestDTOMono = applicationRepository.findTopByEmail(email);
+        return applicationRepository.delete(((ReguestDTO) reguestDTOMono.subscribe()));
+    }
 
 }
